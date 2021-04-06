@@ -3,15 +3,17 @@ provider "aws" {
 }
 
 resource "aws_instance" "myec2" {
-    ami =   "ami-0742b4e673072066f"
+    count = var.instancecount
+    ami =  var.amiid
     instance_type = "t2.micro"
     tags = {
-      "Name" = "Tabu-instance"
-    }
+       # "Name" = "Tabu-instance-${count.index + 1}"
+           "name" = var.tags[count.index]
+          }
 }
 output "myec2ipaddress" {
-  value = aws_instance.myec2.public_ip
+  value = aws_instance.myec2[*].public_ip
 }
 output "myec2privateip" {
-  value = aws_instance.myec2.private_ip
+  value = aws_instance.myec2[*].private_ip
 }
