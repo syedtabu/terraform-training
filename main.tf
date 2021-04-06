@@ -1,6 +1,4 @@
-provider "aws" {
-  region = "us-east-1"
-}
+
 
 resource "aws_instance" "myec2" {
     count = var.instancecount
@@ -11,6 +9,10 @@ resource "aws_instance" "myec2" {
            "name" = var.tags[count.index]
           }
 }
+resource "aws_s3_bucket" "appbucket" {
+    bucket = "myepsilongtraining3"
+}
+
 output "myec2ipaddress" {
   value = aws_instance.myec2[*].public_ip
 }
